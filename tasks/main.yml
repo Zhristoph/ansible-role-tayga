@@ -1,0 +1,45 @@
+---
+
+- name: Install tayga packages
+  tags: tayga
+  apt:
+    name: "{{ packages }}"
+  vars:
+   packages:
+     - tayga
+
+- name: Set IPv4 forward to 1
+  sysctl:
+    name: net.ipv4.conf.all.forwarding
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Set IPv6 forward to 1
+  sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Deploy config for tayga 
+  template:
+    src: "{{ item }}"
+    dest: "/etc/{{ item }}"
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+  notify: restart tayga
+  with_items:
+   - default/tayga
+   - tayga.conf
+
+- name: Enable tayga
+  systemd:
+    name: tayga
+    daemon_reload: yes
+    enabled: yes
+    masked: no
+

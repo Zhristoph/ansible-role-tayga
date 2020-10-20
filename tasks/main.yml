@@ -24,7 +24,7 @@
     state: present
     reload: yes
 
-- name: Deploy config for tayga 
+- name: Deploy config for tayga
   template:
     src: "{{ item }}"
     dest: "/etc/{{ item }}"

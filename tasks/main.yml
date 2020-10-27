@@ -9,6 +9,7 @@
      - tayga
 
 - name: Set IPv4 forward to 1
+  tags: tayga
   sysctl:
     name: net.ipv4.conf.all.forwarding
     value: "1"
@@ -17,6 +18,7 @@
     reload: yes
 
 - name: Set IPv6 forward to 1
+  tags: tayga
   sysctl:
     name: net.ipv6.conf.all.forwarding
     value: "1"
@@ -25,6 +27,7 @@
     reload: yes
 
 - name: Deploy config for tayga
+  tags: tayga
   template:
     src: "{{ item }}"
     dest: "/etc/{{ item }}"
@@ -37,6 +40,7 @@
    - tayga.conf
 
 - name: Enable tayga
+  tags: tayga
   systemd:
     name: tayga
     daemon_reload: yes
